@@ -68,3 +68,9 @@ function convertMs (ms) {
 
   return {days, hours, minutes, seconds};
 }
+
+const addLeadingZero = (value) => {
+  if (value[0] !== '0') {
+    value.padStart(value.length+1,'0');
+  }
+}
