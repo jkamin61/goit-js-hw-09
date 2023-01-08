@@ -1,8 +1,16 @@
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const input = document.querySelector("#datetime-picker");
 const btn = document.querySelector("button");
+const addLeadingZero = (value) => {
+  const valueToBeStringified = value.toString();
+  const stringifiedValueToBeArr = valueToBeStringified.split('');
+  if (stringifiedValueToBeArr.length === 1) {
+    return valueToBeStringified.padStart(2,'0');
+  } else return valueToBeStringified
+}
 const options = {
   enableTime: true,
   time_24hr: true,
@@ -17,10 +25,10 @@ const options = {
     let minutes = document.querySelector("[data-minutes]");
     let seconds = document.querySelector("[data-seconds]");
     if (selectedDates[0] < new Date()) {
-      alert("Pick a future date")
+      Notify.failure("Pick a future date")
       btn.disabled = true
       outputTime = 0;
-      days.innerHTML = "0";
+      days.innerHTML = "00";
       hours.innerHTML = "00";
       minutes.innerHTML = "00";
       seconds.innerHTML = "00";
@@ -30,17 +38,15 @@ const options = {
       btn.disabled = false
       btn.addEventListener("click", () => {
 
-          days.innerHTML = outputTime.days;
-          hours.innerHTML = outputTime.hours;
-          minutes.innerHTML = outputTime.minutes;
-          seconds.innerHTML = outputTime.seconds;
+
           timer = setInterval(() => {
             timeDifference -= 1000;
+
             outputTime = convertMs(timeDifference);
-            days.innerHTML = outputTime.days;
-            hours.innerHTML = outputTime.hours;
-            minutes.innerHTML = outputTime.minutes;
-            seconds.innerHTML = outputTime.seconds;
+            days.innerHTML = addLeadingZero(outputTime.days)
+            hours.innerHTML = addLeadingZero(outputTime.hours);
+            minutes.innerHTML = addLeadingZero(outputTime.minutes);
+            seconds.innerHTML = addLeadingZero(outputTime.seconds);
           }, 1000)
 
       })
@@ -67,10 +73,4 @@ function convertMs (ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
 
   return {days, hours, minutes, seconds};
-}
-
-const addLeadingZero = (value) => {
-  if (value[0] !== '0') {
-    value.padStart(value.length+1,'0');
-  }
 }
