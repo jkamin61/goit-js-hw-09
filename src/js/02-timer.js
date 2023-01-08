@@ -4,6 +4,10 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const input = document.querySelector("#datetime-picker");
 const btn = document.querySelector("button");
+const days = document.querySelector("[data-days]");
+const hours = document.querySelector("[data-hours]");
+const minutes = document.querySelector("[data-minutes]");
+const seconds = document.querySelector("[data-seconds]");
 const addLeadingZero = (value) => {
   const valueToBeStringified = value.toString();
   const stringifiedValueToBeArr = valueToBeStringified.split('');
@@ -20,10 +24,7 @@ const options = {
     let timer;
     let timeDifference = flatpickrInput.selectedDates[0] - new Date();
     let outputTime = convertMs(timeDifference);
-    let days = document.querySelector("[data-days]");
-    let hours = document.querySelector("[data-hours]");
-    let minutes = document.querySelector("[data-minutes]");
-    let seconds = document.querySelector("[data-seconds]");
+
     if (selectedDates[0] < new Date()) {
       Notify.failure("Pick a future date")
       btn.disabled = true
@@ -47,6 +48,10 @@ const options = {
             hours.innerHTML = addLeadingZero(outputTime.hours);
             minutes.innerHTML = addLeadingZero(outputTime.minutes);
             seconds.innerHTML = addLeadingZero(outputTime.seconds);
+            if (timeDifference < 1000) {
+              clearInterval(timer)
+              Notify.success("Hurray!")
+            }
           }, 1000)
 
       })
