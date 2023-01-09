@@ -22,7 +22,7 @@ form.addEventListener('submit', (event) => {
   const step = parseInt(delayStepInput.value, 10);
   const amount = parseInt(amountInput.value, 10);
 
-  for (let i = 0; i < amount; i++) {
+  for (let i = 1; i <= amount; i++) {
     createPromise(i, delay + i * step)
       .then(({ position, delay }) => {
         Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);

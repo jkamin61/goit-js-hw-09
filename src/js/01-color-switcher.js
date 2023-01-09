@@ -6,10 +6,12 @@ function getRandomHexColor() {
 }
 let randomBodyColor = null
 startButton.addEventListener("click", () => {
+  startButton.disabled = true
   randomBodyColor = setInterval(() => {
     body.style.backgroundColor = getRandomHexColor();
   },1000);
 })
 stopButton.addEventListener("click", () => {
   clearInterval(randomBodyColor);
+  startButton.disabled = false
 })
